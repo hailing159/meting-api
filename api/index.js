@@ -7,17 +7,17 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', '*');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const { server = 'netease', type = 'search', id, s } = req.query;
+  const { server = 'netease', type = 'search', id, s, br, quality } = req.query;
 
   try {
     let result;
     if (server === 'netease') {
       if (type === 'search') result = await neteaseSearch(s);
-      else if (type === 'song') result = await neteaseSong(id);
+      else if (type === 'song') result = await neteaseSong(id, br);
       else if (type === 'lyric') result = await neteaseLyric(id);
     } else if (server === 'tencent') {
       if (type === 'search') result = await tencentSearch(s);
-      else if (type === 'song') result = await tencentSong(id);
+      else if (type === 'song') result = await tencentSong(id, quality);
       else if (type === 'lyric') result = await tencentLyric(id);
     } else {
       return res.status(400).json({ error: 'Unsupported server' });
